@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Design tokens — adjust these to retheme the entire site */
+  --color-navy: #1e2f4a;
+  --color-navy-deep: #15233a;
+  --color-navy-soft: #2a4064;
+  --color-gold: #f5b440;
+  --color-gold-bright: #fbbf24;
+  --color-gold-deep: #d97706;
+  --color-cream: #faf7f2;
+  --color-cream-warm: #f4ede2;
+  --color-ink: #1a1a2e;
+  --color-muted: #5b6478;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --space-section: 6rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-cream);
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-navy-deep);
+  }
+}
+
+@layer components {
+  .container-px {
+    @apply px-5 sm:px-8 lg:px-12;
+  }
+  .section-py {
+    @apply py-20 md:py-28;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-600;
+  }
+  .eyebrow-light {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold-300;
+  }
+  .heading-display {
+    @apply font-serif font-semibold leading-[1.05] tracking-tightest text-navy-900;
+  }
+  .link-underline {
+    @apply relative inline-flex items-center gap-2 font-medium transition-colors;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 h-px w-0 bg-current transition-all duration-300;
+  }
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+}
+
+/* Reveal-on-scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f4ede2;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a4064;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1e2f4a;
+}
