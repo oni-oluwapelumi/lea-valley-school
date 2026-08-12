@@ -3,7 +3,6 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { Lock, Mail, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { useAuth } from '@/hooks/useAuth';
-import { isSupabaseConfigured } from '@/lib/supabase';
 
 export default function AdminLogin() {
   const { signIn, session, loading } = useAuth();
@@ -50,13 +49,6 @@ export default function AdminLogin() {
           <p className="mt-2 text-center text-sm text-navy-300">
             Sign in to manage Lea Valley School news &amp; events.
           </p>
-
-          {!isSupabaseConfigured && (
-            <div className="mt-6 rounded-sm border border-gold-400/40 bg-gold-400/10 p-4 text-sm text-gold-100">
-              <p>Use presentation mode to explore the dashboard and prepare draft content.</p>
-              <button type="button" onClick={() => navigate('/admin')} className="mt-4 w-full rounded-sm bg-gold-400 py-3 font-semibold text-navy-950 transition hover:bg-gold-300">Open Presentation Dashboard</button>
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
