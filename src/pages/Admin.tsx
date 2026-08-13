@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { Plus, Pencil, Trash2, LogOut, X, ArrowRight, ExternalLink, Image as ImageIcon, LayoutDashboard, Newspaper, Images, FileText, Inbox, Settings, MessageSquare } from 'lucide-react';
+import { Plus, Pencil, Trash2, LogOut, X, Menu, ArrowRight, ExternalLink, Image as ImageIcon, LayoutDashboard, Newspaper, Images, FileText, Inbox, Settings, MessageSquare } from 'lucide-react';
 import Logo from '@/components/Logo';
 import Button from '@/components/Button';
 import { useAuth } from '@/hooks/useAuth';
@@ -52,6 +52,7 @@ export default function Admin() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'news' | 'gallery' | 'pages' | 'enquiries' | 'messages' | 'settings'>('dashboard');
 
   const loadNews = async () => {
@@ -215,6 +216,15 @@ export default function Admin() {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-navy-200 text-navy-700 lg:hidden"
+              aria-label="Open admin menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <Menu className="h-5 w-5" />
+            </button>
             <Link
               to="/"
               className="hidden items-center gap-1.5 text-sm font-medium text-navy-600 hover:text-navy-900 sm:flex"
@@ -232,14 +242,19 @@ export default function Admin() {
       </header>
 
       <main className="mx-auto grid max-w-8xl gap-8 px-6 py-10 lg:grid-cols-[230px_1fr] lg:px-12">
-        <aside className="rounded-sm border border-navy-100 bg-white p-3 shadow-sm lg:h-fit">
-          <p className="px-3 pb-3 pt-2 text-xs font-semibold uppercase tracking-[.18em] text-navy-400">Content Manager</p>
+        {mobileMenuOpen && <button type="button" onClick={() => setMobileMenuOpen(false)} className="fixed inset-0 z-40 bg-navy-950/45 lg:hidden" aria-label="Close admin menu" />}
+        <aside className={`fixed inset-y-0 left-0 z-50 w-[285px] overflow-y-auto border-r border-navy-100 bg-white p-4 pt-24 shadow-xl transition-transform duration-300 lg:static lg:h-fit lg:w-auto lg:translate-x-0 lg:rounded-sm lg:border lg:p-3 lg:shadow-sm ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="mb-5 flex items-center justify-between lg:hidden">
+            <p className="text-xs font-semibold uppercase tracking-[.18em] text-navy-400">Content Manager</p>
+            <button type="button" onClick={() => setMobileMenuOpen(false)} className="rounded-sm p-2 text-navy-600" aria-label="Close admin menu"><X className="h-5 w-5" /></button>
+          </div>
+          <p className="hidden px-3 pb-3 pt-2 text-xs font-semibold uppercase tracking-[.18em] text-navy-400 lg:block">Content Manager</p>
           {[
             ['dashboard', 'Overview', LayoutDashboard], ['news', 'News & Events', Newspaper], ['gallery', 'Gallery & Media', Images],
             ['pages', 'Pages & Text', FileText], ['enquiries', 'Admissions Enquiries', Inbox], ['messages', 'Contact Messages', MessageSquare], ['settings', 'Site Settings', Settings],
           ].map(([id, label, Icon]) => {
             const MenuIcon = Icon as typeof LayoutDashboard;
-            return <button key={id as string} type="button" onClick={() => setActiveSection(id as typeof activeSection)} className={`mb-1 flex w-full items-center gap-3 rounded-sm px-3 py-3 text-left text-sm font-medium transition ${activeSection === id ? 'bg-navy-900 text-white' : 'text-navy-700 hover:bg-navy-50'}`}><MenuIcon className="h-4 w-4" />{String(label)}</button>;
+            return <button key={id as string} type="button" onClick={() => { setActiveSection(id as typeof activeSection); setMobileMenuOpen(false); }} className={`mb-1 flex w-full items-center gap-3 rounded-sm px-3 py-3 text-left text-sm font-medium transition ${activeSection === id ? 'bg-navy-900 text-white' : 'text-navy-700 hover:bg-navy-50'}`}><MenuIcon className="h-4 w-4" />{String(label)}</button>;
           })}
         </aside>
 
